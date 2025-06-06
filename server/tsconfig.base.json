@@ -1,6 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "strict": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
@@ -18,9 +19,6 @@
       "~lib/*": [
         "./src/lib/*"
       ],
-      "~modules/*": [
-        "./src/modules/*"
-      ],
       "~resources/*": [
         "./src/resources/*"
       ],
@@ -32,6 +30,12 @@
       ],
       "~services/*": [
         "./src/services/*"
+      ],
+      "~repositories/*": [
+        "./src/repositories/*"
+      ],
+      "~models/*": [
+        "./src/models/*"
       ]
     }
   }

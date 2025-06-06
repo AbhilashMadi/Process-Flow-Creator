@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "./ts-paths.json"
-  ],
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
