@@ -1,0 +1,30 @@
+{
+  "name": "process-flow-creator",
+  "version": "1.0.0",
+  "description": "A web-based Process Flow Creator for Fleet Management Software using MERN stack with Hono and Bun",
+  "scripts": {
+    "start:backend": "npm --prefix backend start",
+    "start:frontend": "npm --prefix frontend start"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "bun": ">=1.0.0"
+  },
+  "keywords": [
+    "process-flow",
+    "workflow",
+    "fleet-management",
+    "mern",
+    "hono",
+    "bun",
+    "react",
+    "mongodb"
+  ],
+  "author": "https://github.com/AbhilashMadi",
+  "license": "ISC",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "packageManager": "pnpm@10.11.0"
+}
