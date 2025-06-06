@@ -5,7 +5,12 @@
     "start:prod": "bun run src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.7.11"
+    "@types/mongoose": "^5.11.97",
+    "@upstash/ratelimit": "^2.0.5",
+    "@upstash/redis": "^1.35.0",
+    "hono": "^4.7.11",
+    "mongoose": "^8.15.1",
+    "zod": "^3.25.55"
   },
   "devDependencies": {
     "@types/bun": "latest"
