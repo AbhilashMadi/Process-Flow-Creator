@@ -1,51 +1,44 @@
 import { Hono } from 'hono';
-import { logger } from "hono/logger";
-import { prettyJSON } from "hono/pretty-json";
-import { secureHeaders } from 'hono/secure-headers'
+import { logger } from 'hono/logger';
+import { prettyJSON } from 'hono/pretty-json';
+import { secureHeaders } from 'hono/secure-headers';
 
-// Configs
+// === Configurations ===
 import cors from '~configs/cors.config';
 import DBConnection from '~configs/db.config';
 
-// Handlers (Controllers)
-import exceptionController from '~controllers/exception.controller';
-import notFoundController from '~controllers/not-found.controller';
-
-// Middelewares
+// === Global Middleware ===
 import responseMiddleware from '~middlewares/response.middleware';
-import rateLimitMiddleware from "~middlewares/rate-limit.middleware";
+import rateLimitMiddleware from '~middlewares/rate-limit.middleware';
 
-// Routes
+// === Routes ===
 import workflowRoutes from '~routes/workflows';
 import monitorRoutes from '~routes/monitor.routes';
 
-import { env } from '~configs/env.config';
+// === Global Handlers ===
+import exceptionController from '~controllers/exception.controller';
+import notFoundController from '~controllers/not-found.controller';
 
-const app = new Hono({ strict: false })
+// === App Setup ===
+const app = new Hono({ strict: false });
 
-// Database connections
+// === Init DB Connections ===
 DBConnection();
 
-// Global Middlewares
+// === Global Middleware ===
 app.use(cors);
-app.use(secureHeaders())
+app.use(secureHeaders());
 app.use(logger());
 app.use(prettyJSON());
+app.use(responseMiddleware);
+// app.use(rateLimitMiddleware);
 
-// Custom Middlewares
-app.use(responseMiddleware)
-app.use(rateLimitMiddleware)
+// === Register Routes ===
+app.route('/api/v1/workflows', workflowRoutes);
+app.route('/api/v1/monitor', monitorRoutes);
 
-// Register routes
-app.route('/workflows', workflowRoutes)
-app.route('/monitor', monitorRoutes)
-
-// Global Handlers
+// === Global Error Handlers ===
 app.onError(exceptionController);
 app.notFound(notFoundController);
 
-export default {
-  port: env.PORT,
-  host: env.HOST,
-  fetch: app.fetch,
-}
+export default app;

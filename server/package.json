@@ -2,7 +2,10 @@
   "name": "server",
   "scripts": {
     "start:dev": "bun run --hot src/index.ts",
-    "start:prod": "bun run src/index.ts"
+    "start:prod": "bun run src/index.ts",
+    "start:prod:cluster": "bun run --smol --workers src/index.ts",
+    "restart": "bun run --restart src/index.ts",
+    "log": "bun logs"
   },
   "dependencies": {
     "@types/mongoose": "^5.11.97",
