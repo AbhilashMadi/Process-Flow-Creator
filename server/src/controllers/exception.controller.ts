@@ -2,7 +2,7 @@ import type { Context } from "hono"
 import { StatusCodes } from "~resources/status-codes"
 import { BaseException } from "~utils/http.exceptions"
 
-export default async function (err: Error, c: Context) {
+export default async function ExceptionController(err: Error, c: Context) {
   if (err instanceof BaseException) {
     return c.fail(err.message, {
       status: err.statusCode,

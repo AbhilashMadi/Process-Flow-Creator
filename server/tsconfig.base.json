@@ -13,8 +13,8 @@
       "~middlewares/*": [
         "./src/middlewares/*"
       ],
-      "~handlers/*": [
-        "./src/handlers/*"
+      "~controllers/*": [
+        "./src/controllers/*"
       ],
       "~lib/*": [
         "./src/lib/*"

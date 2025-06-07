@@ -14,6 +14,8 @@ const envSchema = z.object({
 
   REDIS_URL: z.string().url("REDIS_URL must be a valid URL"),
   REDIS_TOKEN: z.string().min(1, "REDIS_TOKEN is required"),
+
+  HEALTH_CHECK_TIMEOUT: z.coerce.number({ message: 'HEALTH_CHECK_TIMEOUT is required' }),
 });
 
 // Parse and validate
