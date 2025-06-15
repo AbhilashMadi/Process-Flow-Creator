@@ -1,0 +1,497 @@
+{
+  "nodes": [
+    {
+      "id": "start-node",
+      "type": "start",
+      "position": { "x": 0, "y": 0 },
+      "data": {
+        "label": "Workflow Start",
+        "description": "Entry point of the workflow"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Node Label",
+            "type": "text",
+            "required": true,
+            "default": "Workflow Start"
+          },
+          {
+            "name": "initiator",
+            "label": "Triggered By",
+            "type": "select",
+            "options": [
+              { "value": "system", "label": "System Event" },
+              { "value": "manager", "label": "Manager Action" },
+              { "value": "automatic", "label": "Automatic Trigger" }
+            ],
+            "default": "system"
+          },
+          {
+            "name": "triggerConditions",
+            "label": "Trigger Conditions",
+            "type": "checkbox-group",
+            "options": [
+              { "value": "timeBased", "label": "Time-based" },
+              { "value": "eventBased", "label": "Event-based" },
+              { "value": "manual", "label": "Manual Trigger" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "task-node",
+      "type": "task",
+      "position": { "x": 250, "y": 0 },
+      "data": {
+        "label": "Assign Task",
+        "assigneeType": "driver"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Task Name",
+            "type": "text",
+            "required": true,
+            "default": "Assign Task"
+          },
+          {
+            "name": "assigneeType",
+            "label": "Assignee Type",
+            "type": "select",
+            "options": [
+              { "value": "driver", "label": "Driver" },
+              { "value": "team", "label": "Team" },
+              { "value": "role", "label": "Role" }
+            ],
+            "default": "driver"
+          },
+          {
+            "name": "assigneeId",
+            "label": "Assignee ID",
+            "type": "text",
+            "showWhen": "assigneeType !== 'role'"
+          },
+          {
+            "name": "role",
+            "label": "Role Name",
+            "type": "text",
+            "showWhen": "assigneeType === 'role'"
+          },
+          {
+            "name": "dueTime",
+            "label": "Due Time",
+            "type": "datetime-local"
+          },
+          {
+            "name": "instructions",
+            "label": "Instructions",
+            "type": "textarea"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vehicle-check-node",
+      "type": "vehicleCheck",
+      "position": { "x": 500, "y": 0 },
+      "data": {
+        "label": "Vehicle Inspection"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Checklist Name",
+            "type": "text",
+            "default": "Vehicle Inspection"
+          },
+          {
+            "name": "checklist.fuelLevel",
+            "label": "Check Fuel Level",
+            "type": "checkbox"
+          },
+          {
+            "name": "checklist.tirePressure",
+            "label": "Check Tire Pressure",
+            "type": "checkbox"
+          },
+          {
+            "name": "checklist.damageCheck",
+            "label": "Damage Inspection",
+            "type": "checkbox"
+          },
+          {
+            "name": "checklist.equipmentCheck",
+            "label": "Equipment Check",
+            "type": "checkbox"
+          },
+          {
+            "name": "requiredPhotos",
+            "label": "Required Photos",
+            "type": "number",
+            "min": 0,
+            "max": 10,
+            "default": 1
+          },
+          {
+            "name": "approvalRequired",
+            "label": "Requires Approval",
+            "type": "checkbox"
+          }
+        ]
+      }
+    },
+    {
+      "id": "approval-node",
+      "type": "approval",
+      "position": { "x": 750, "y": 0 },
+      "data": {
+        "label": "Manager Approval"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Approval Title",
+            "type": "text",
+            "default": "Manager Approval"
+          },
+          {
+            "name": "approverRole",
+            "label": "Approver Role",
+            "type": "text",
+            "required": true,
+            "default": "fleet_manager"
+          },
+          {
+            "name": "escalationAfterHours",
+            "label": "Escalate After (hours)",
+            "type": "number",
+            "min": 1,
+            "max": 72,
+            "default": 24
+          },
+          {
+            "name": "approvalCriteria",
+            "label": "Approval Criteria",
+            "type": "textarea",
+            "placeholder": "Describe what needs approval"
+          },
+          {
+            "name": "fallbackApprover",
+            "label": "Fallback Approver",
+            "type": "text",
+            "placeholder": "user@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "id": "navigation-node",
+      "type": "navigation",
+      "position": { "x": 1000, "y": 0 },
+      "data": {
+        "label": "Route Navigation"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Navigation Title",
+            "type": "text",
+            "default": "Route Navigation"
+          },
+          {
+            "name": "destination.address",
+            "label": "Destination Address",
+            "type": "text",
+            "required": true
+          },
+          {
+            "name": "destination.geofenceRadius",
+            "label": "Geofence Radius (meters)",
+            "type": "number",
+            "min": 50,
+            "max": 5000,
+            "default": 100
+          },
+          {
+            "name": "routePreferences.avoidTolls",
+            "label": "Avoid Tolls",
+            "type": "checkbox"
+          },
+          {
+            "name": "routePreferences.avoidHighways",
+            "label": "Avoid Highways",
+            "type": "checkbox"
+          },
+          {
+            "name": "routePreferences.optimizeFor",
+            "label": "Optimize For",
+            "type": "select",
+            "options": [
+              { "value": "time", "label": "Time" },
+              { "value": "distance", "label": "Distance" },
+              { "value": "fuel", "label": "Fuel Efficiency" }
+            ],
+            "default": "time"
+          },
+          {
+            "name": "etaBuffer",
+            "label": "ETA Buffer (minutes)",
+            "type": "number",
+            "min": 0,
+            "max": 120,
+            "default": 15
+          }
+        ]
+      }
+    },
+    {
+      "id": "document-node",
+      "type": "document",
+      "position": { "x": 0, "y": 200 },
+      "data": {
+        "label": "Document Upload"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Document Title",
+            "type": "text",
+            "default": "Document Upload"
+          },
+          {
+            "name": "documentType",
+            "label": "Document Type",
+            "type": "select",
+            "options": [
+              { "value": "deliveryProof", "label": "Delivery Proof" },
+              { "value": "inspectionReport", "label": "Inspection Report" },
+              { "value": "signature", "label": "Signature" }
+            ],
+            "default": "deliveryProof"
+          },
+          {
+            "name": "required",
+            "label": "Required",
+            "type": "checkbox",
+            "default": true
+          },
+          {
+            "name": "format",
+            "label": "File Format",
+            "type": "select",
+            "options": [
+              { "value": "photo", "label": "Photo" },
+              { "value": "pdf", "label": "PDF" },
+              { "value": "signature", "label": "Digital Signature" }
+            ],
+            "default": "photo"
+          },
+          {
+            "name": "maxFiles",
+            "label": "Maximum Files",
+            "type": "number",
+            "min": 1,
+            "max": 10,
+            "default": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "delay-node",
+      "type": "delay",
+      "position": { "x": 250, "y": 200 },
+      "data": {
+        "label": "Waiting Period"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Delay Title",
+            "type": "text",
+            "default": "Waiting Period"
+          },
+          {
+            "name": "delayType",
+            "label": "Delay Type",
+            "type": "select",
+            "options": [
+              { "value": "fixed", "label": "Fixed Duration" },
+              { "value": "untilTime", "label": "Until Specific Time" },
+              { "value": "untilEvent", "label": "Until Event Occurs" }
+            ],
+            "default": "fixed"
+          },
+          {
+            "name": "duration",
+            "label": "Duration (minutes)",
+            "type": "number",
+            "min": 1,
+            "showWhen": "delayType === 'fixed'"
+          },
+          {
+            "name": "untilTime",
+            "label": "Until Time",
+            "type": "datetime-local",
+            "showWhen": "delayType === 'untilTime'"
+          },
+          {
+            "name": "eventName",
+            "label": "Event Name",
+            "type": "text",
+            "showWhen": "delayType === 'untilEvent'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "condition-node",
+      "type": "condition",
+      "position": { "x": 500, "y": 200 },
+      "data": {
+        "label": "Decision Point"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Condition Name",
+            "type": "text",
+            "default": "Decision Point"
+          },
+          {
+            "name": "conditions",
+            "label": "Conditions",
+            "type": "array",
+            "itemSchema": {
+              "variable": {
+                "type": "select",
+                "options": [
+                  { "value": "vehicleType", "label": "Vehicle Type" },
+                  { "value": "timeOfDay", "label": "Time of Day" },
+                  { "value": "loadStatus", "label": "Load Status" }
+                ]
+              },
+              "operator": {
+                "type": "select",
+                "options": [
+                  { "value": "==", "label": "Equals" },
+                  { "value": ">", "label": "Greater Than" },
+                  { "value": "<", "label": "Less Than" },
+                  { "value": "contains", "label": "Contains" }
+                ]
+              },
+              "value": {
+                "type": "text"
+              }
+            }
+          },
+          {
+            "name": "defaultBranch",
+            "label": "Default Next Step",
+            "type": "text",
+            "placeholder": "node-id"
+          }
+        ]
+      }
+    },
+    {
+      "id": "notification-node",
+      "type": "notification",
+      "position": { "x": 750, "y": 200 },
+      "data": {
+        "label": "Send Notification"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "Notification Title",
+            "type": "text",
+            "default": "Send Notification"
+          },
+          {
+            "name": "recipients",
+            "label": "Recipients",
+            "type": "array",
+            "itemType": "text",
+            "placeholder": "user@example.com"
+          },
+          {
+            "name": "messageTemplate",
+            "label": "Message Template",
+            "type": "textarea",
+            "required": true
+          },
+          {
+            "name": "channels",
+            "label": "Channels",
+            "type": "checkbox-group",
+            "options": [
+              { "value": "sms", "label": "SMS" },
+              { "value": "email", "label": "Email" },
+              { "value": "app", "label": "In-App" }
+            ],
+            "default": ["email"]
+          },
+          {
+            "name": "triggerConditions",
+            "label": "Trigger Conditions",
+            "type": "text",
+            "placeholder": "e.g., status='completed'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "end-node",
+      "type": "end",
+      "position": { "x": 1000, "y": 200 },
+      "data": {
+        "label": "Workflow End"
+      },
+      "formSchema": {
+        "fields": [
+          {
+            "name": "label",
+            "label": "End Node Label",
+            "type": "text",
+            "default": "Workflow End"
+          },
+          {
+            "name": "outcomeType",
+            "label": "Outcome Type",
+            "type": "select",
+            "options": [
+              { "value": "success", "label": "Success" },
+              { "value": "partial", "label": "Partial Completion" },
+              { "value": "failure", "label": "Failure" }
+            ],
+            "default": "success"
+          },
+          {
+            "name": "nextSteps",
+            "label": "Next Steps",
+            "type": "textarea",
+            "placeholder": "Describe any follow-up actions"
+          },
+          {
+            "name": "autoArchive",
+            "label": "Auto Archive",
+            "type": "checkbox",
+            "default": true
+          }
+        ]
+      }
+    }
+  ]
+}

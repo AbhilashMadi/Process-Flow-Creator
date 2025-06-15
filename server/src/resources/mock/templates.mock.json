@@ -1,0 +1,268 @@
+{
+  "templates": [
+    {
+      "title": "Standard Delivery Workflow",
+      "template": {
+        "id": "delivery-standard",
+        "name": "Standard Delivery Process",
+        "description": "End-to-end delivery workflow for fleet vehicles",
+        "nodes": [
+          {
+            "id": "n1",
+            "type": "start",
+            "position": { "x": 0, "y": 100 },
+            "data": {
+              "label": "Delivery Triggered",
+              "initiator": "system",
+              "triggerConditions": ["eventBased"]
+            }
+          },
+          {
+            "id": "n2",
+            "type": "task",
+            "position": { "x": 250, "y": 100 },
+            "data": {
+              "label": "Assign Driver",
+              "assigneeType": "driver",
+              "instructions": "Verify driver availability and assign to delivery"
+            }
+          },
+          {
+            "id": "n3",
+            "type": "vehicleCheck",
+            "position": { "x": 500, "y": 100 },
+            "data": {
+              "checklist": {
+                "fuelLevel": true,
+                "tirePressure": true,
+                "equipmentCheck": true
+              },
+              "requiredPhotos": 2
+            }
+          },
+          {
+            "id": "n4",
+            "type": "navigation",
+            "position": { "x": 750, "y": 100 },
+            "data": {
+              "destination": {
+                "address": "{customerAddress}",
+                "geofenceRadius": 150
+              },
+              "routePreferences": {
+                "optimizeFor": "time"
+              }
+            }
+          },
+          {
+            "id": "n5",
+            "type": "document",
+            "position": { "x": 1000, "y": 100 },
+            "data": {
+              "documentType": "deliveryProof",
+              "format": "photo",
+              "maxFiles": 3
+            }
+          },
+          {
+            "id": "n6",
+            "type": "end",
+            "position": { "x": 1250, "y": 100 },
+            "data": {
+              "outcomeType": "success",
+              "nextSteps": "Update inventory system"
+            }
+          }
+        ],
+        "edges": [
+          { "id": "e1", "source": "n1", "target": "n2" },
+          { "id": "e2", "source": "n2", "target": "n3" },
+          { "id": "e3", "source": "n3", "target": "n4" },
+          { "id": "e4", "source": "n4", "target": "n5" },
+          { "id": "e5", "source": "n5", "target": "n6" }
+        ]
+      }
+    },
+    {
+      "title": "Maintenance Inspection Workflow",
+      "template": {
+        "id": "maintenance-inspection",
+        "name": "Vehicle Maintenance Check",
+        "description": "Complete vehicle inspection and repair process",
+        "nodes": [
+          {
+            "id": "n1",
+            "type": "start",
+            "position": { "x": 0, "y": 200 },
+            "data": {
+              "label": "Maintenance Due",
+              "initiator": "automatic",
+              "triggerConditions": ["timeBased"]
+            }
+          },
+          {
+            "id": "n2",
+            "type": "vehicleCheck",
+            "position": { "x": 250, "y": 200 },
+            "data": {
+              "label": "Full Inspection",
+              "checklist": {
+                "fuelLevel": true,
+                "tirePressure": true,
+                "damageCheck": true,
+                "equipmentCheck": true
+              },
+              "requiredPhotos": 5,
+              "approvalRequired": true
+            }
+          },
+          {
+            "id": "n3",
+            "type": "condition",
+            "position": { "x": 500, "y": 200 },
+            "data": {
+              "conditions": [
+                {
+                  "variable": "damageCheck",
+                  "operator": "==",
+                  "value": "true"
+                }
+              ],
+              "defaultBranch": "n5"
+            }
+          },
+          {
+            "id": "n4",
+            "type": "task",
+            "position": { "x": 750, "y": 50 },
+            "data": {
+              "label": "Schedule Repairs",
+              "assigneeType": "role",
+              "role": "maintenance_manager"
+            }
+          },
+          {
+            "id": "n5",
+            "type": "notification",
+            "position": { "x": 750, "y": 350 },
+            "data": {
+              "recipients": ["fleet@company.com"],
+              "messageTemplate": "Vehicle #{vehicleId} inspection completed",
+              "channels": ["email"]
+            }
+          },
+          {
+            "id": "n6",
+            "type": "end",
+            "position": { "x": 1000, "y": 200 },
+            "data": {
+              "outcomeType": "partial",
+              "autoArchive": false
+            }
+          }
+        ],
+        "edges": [
+          { "id": "e1", "source": "n1", "target": "n2" },
+          { "id": "e2", "source": "n2", "target": "n3" },
+          {
+            "id": "e3",
+            "source": "n3",
+            "target": "n4",
+            "label": "Needs Repair"
+          },
+          { "id": "e4", "source": "n3", "target": "n5", "label": "No Issues" },
+          { "id": "e5", "source": "n4", "target": "n6" },
+          { "id": "e6", "source": "n5", "target": "n6" }
+        ]
+      }
+    },
+    {
+      "title": "Emergency Response Workflow",
+      "template": {
+        "id": "emergency-response",
+        "name": "Vehicle Emergency Protocol",
+        "description": "Workflow for handling vehicle emergencies",
+        "nodes": [
+          {
+            "id": "n1",
+            "type": "start",
+            "position": { "x": 0, "y": 150 },
+            "data": {
+              "label": "Emergency Detected",
+              "initiator": "system",
+              "triggerConditions": ["eventBased"]
+            }
+          },
+          {
+            "id": "n2",
+            "type": "notification",
+            "position": { "x": 250, "y": 50 },
+            "data": {
+              "label": "Alert Safety Team",
+              "recipients": ["safety-team@company.com", "911"],
+              "messageTemplate": "EMERGENCY: Vehicle {vehicleId} at {location}",
+              "channels": ["sms", "email"]
+            }
+          },
+          {
+            "id": "n3",
+            "type": "task",
+            "position": { "x": 250, "y": 250 },
+            "data": {
+              "label": "Driver Check-in",
+              "assigneeType": "driver",
+              "instructions": "Confirm driver status via emergency channel"
+            }
+          },
+          {
+            "id": "n4",
+            "type": "delay",
+            "position": { "x": 500, "y": 150 },
+            "data": {
+              "delayType": "fixed",
+              "duration": 30
+            }
+          },
+          {
+            "id": "n5",
+            "type": "approval",
+            "position": { "x": 750, "y": 150 },
+            "data": {
+              "label": "Incident Review",
+              "approverRole": "safety_director",
+              "escalationAfterHours": 1
+            }
+          },
+          {
+            "id": "n6",
+            "type": "document",
+            "position": { "x": 1000, "y": 150 },
+            "data": {
+              "documentType": "inspectionReport",
+              "format": "photo",
+              "maxFiles": 10
+            }
+          },
+          {
+            "id": "n7",
+            "type": "end",
+            "position": { "x": 1250, "y": 150 },
+            "data": {
+              "outcomeType": "failure",
+              "nextSteps": "Initiate insurance claim process"
+            }
+          }
+        ],
+        "edges": [
+          { "id": "e1", "source": "n1", "target": "n2" },
+          { "id": "e2", "source": "n1", "target": "n3" },
+          { "id": "e3", "source": "n2", "target": "n4" },
+          { "id": "e4", "source": "n3", "target": "n4" },
+          { "id": "e5", "source": "n4", "target": "n5" },
+          { "id": "e6", "source": "n5", "target": "n6" },
+          { "id": "e7", "source": "n6", "target": "n7" }
+        ]
+      }
+    }
+  ]
+}

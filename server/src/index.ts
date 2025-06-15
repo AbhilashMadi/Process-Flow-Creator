@@ -12,8 +12,9 @@ import responseMiddleware from '~middlewares/response.middleware';
 import rateLimitMiddleware from '~middlewares/rate-limit.middleware';
 
 // === Routes ===
-import workflowRoutes from '~routes/workflows';
+import workflowRoutes from '~/routes/workflow.route';
 import monitorRoutes from '~routes/monitor.routes';
+import resourceRoutes from '~/routes/resource.routes';
 
 // === Global Handlers ===
 import exceptionController from '~controllers/exception.controller';
@@ -31,11 +32,12 @@ app.use(secureHeaders());
 app.use(logger());
 app.use(prettyJSON());
 app.use(responseMiddleware);
-// app.use(rateLimitMiddleware);
+app.use(rateLimitMiddleware);
 
 // === Register Routes ===
 app.route('/api/v1/workflows', workflowRoutes);
 app.route('/api/v1/monitor', monitorRoutes);
+app.route('/api/v1/resources', resourceRoutes);
 
 // === Global Error Handlers ===
 app.onError(exceptionController);
