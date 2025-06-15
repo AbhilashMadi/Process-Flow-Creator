@@ -1,7 +1,9 @@
 import { type FC } from "react";
 
 const NodesSection: FC = () => {
-  return <section>Nodes Section</section>;
+  return (<section>
+    sdfsdf
+  </section>);
 };
 
 export default NodesSection;

@@ -1,7 +1,9 @@
 import { type FC } from "react";
 
 const WorkflowView: FC = () => {
-  return <section>Workflow View</section>;
+    return (<section>
+    sdfsdf
+  </section>);
 };
 
 export default WorkflowView;
