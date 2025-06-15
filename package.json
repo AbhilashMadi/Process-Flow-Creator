@@ -22,9 +22,5 @@
   ],
   "author": "https://github.com/AbhilashMadi",
   "license": "ISC",
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "packageManager": "pnpm@10.11.0"
 }
